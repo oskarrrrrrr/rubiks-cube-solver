@@ -1,14 +1,164 @@
-class Cube3by3:
+from abc import ABC, abstractmethod
+from enum import Enum, auto
+
+
+class FaceColor(Enum):
+    WHITE = auto()
+    RED = auto()
+    GREEN = auto()
+    BLUE = auto()
+    ORANGE = auto()
+    YELLOW = auto()
+
+
+color2letter = {
+    FaceColor.WHITE: 'w',
+    FaceColor.RED: 'r',
+    FaceColor.GREEN: 'g',
+    FaceColor.BLUE: 'b',
+    FaceColor.ORANGE: 'o',
+    FaceColor.YELLOW: 'y',
+}
+
+
+class ClassicCubeEngine(ABC):
+    @abstractmethod
+    def get_face(self, face_name):
+        pass
+
+    @abstractmethod
+    def move_R(self, double, reverse):
+        pass
+
+    def move_r(self, double, reverse):
+        self.move_R(double, reverse)
+        self.move_M(double, not reverse)
+
+    @abstractmethod
+    def move_L(self, double, reverse):
+        pass
+
+    def move_l(self, double, reverse):
+        self.move_L(double, reverse)
+        self.move_M(double, reverse)
+
+    @abstractmethod
+    def move_U(self, double, reverse):
+        pass
+
+    def move_u(self, double, reverse):
+        self.move_U(double, reverse)
+        self.move_E(double, not reverse)
+
+    @abstractmethod
+    def move_D(self, double, reverse):
+        pass
+
+    def move_d(self, double, reverse):
+        self.move_D(double, reverse)
+        self.move_E(double, reverse)
+
+    @abstractmethod
+    def move_F(self, double, reverse):
+        pass
+
+    def move_f(self, double, reverse):
+        self.move_F(double, reverse)
+        self.move_S(double, reverse)
+
+    @abstractmethod
+    def move_B(self, double, reverse):
+        pass
+
+    def move_b(self, double, reverse):
+        self.move_B(double, reverse)
+        self.move_S(double, not reverse)
+
+    @abstractmethod
+    def move_M(self, double, reverse):
+        pass
+
+    @abstractmethod
+    def move_E(self, double, reverse):
+        pass
+
+    @abstractmethod
+    def move_S(self, double, reverse):
+        pass
+
+    @abstractmethod
+    def move_X(self, double, reverse):
+        pass
+
+    @abstractmethod
+    def move_Y(self, double, reverse):
+        pass
+
+    @abstractmethod
+    def move_Z(self, double, reverse):
+        pass
+
+    def make_move(self, move):
+        double = '2' in move
+        reverse = "'" in move
+        move_letter = move[0]
+
+        if move_letter == 'R':
+            self.move_R(double, reverse)
+        elif move_letter == 'r':
+            self.move_r(double, reverse)
+
+        elif move_letter == 'L':
+            self.move_L(double, reverse)
+        elif move_letter == 'l':
+            self.move_l(double, reverse)
+
+        elif move_letter == 'U':
+            self.move_U(double, reverse)
+        elif move_letter == 'u':
+            self.move_u(double, reverse)
+
+        elif move_letter == 'D':
+            self.move_D(double, reverse)
+        elif move_letter == 'd':
+            self.move_d(double, reverse)
+
+        elif move_letter == 'F':
+            self.move_F(double, reverse)
+        elif move_letter == 'f':
+            self.move_f(double, reverse)
+
+        elif move_letter == 'B':
+            self.move_B(double, reverse)
+        elif move_letter == 'b':
+            self.move_b(double, reverse)
+
+        elif move_letter == 'M':
+            self.move_M(double, reverse)
+        elif move_letter == 'E':
+            self.move_E(double, reverse)
+        elif move_letter == 'S':
+            self.move_S(double, reverse)
+
+        elif move_letter == 'X':
+            self.move_X(double, reverse)
+        elif move_letter == 'Y':
+            self.move_Y(double, reverse)
+        elif move_letter == 'Z':
+            self.move_Z(double, reverse)
+
+
+class CubeSimple(ClassicCubeEngine):
     def __init__(self):
         self._init_faces()
 
     def _init_faces(self):
-        self.top_face = Cube3by3._get_single_color_face('w')
-        self.front_face = Cube3by3._get_single_color_face('r')
-        self.left_face = Cube3by3._get_single_color_face('g')
-        self.right_face = Cube3by3._get_single_color_face('b')
-        self.back_face = Cube3by3._get_single_color_face('o')
-        self.bottom_face = Cube3by3._get_single_color_face('y')
+        self.top_face = CubeSimple._get_single_color_face(FaceColor.WHITE)
+        self.front_face = CubeSimple._get_single_color_face(FaceColor.RED)
+        self.left_face = CubeSimple._get_single_color_face(FaceColor.GREEN)
+        self.right_face = CubeSimple._get_single_color_face(FaceColor.BLUE)
+        self.back_face = CubeSimple._get_single_color_face(FaceColor.ORANGE)
+        self.bottom_face = CubeSimple._get_single_color_face(FaceColor.YELLOW)
 
     @staticmethod
     def _get_single_color_face(color):
@@ -16,84 +166,69 @@ class Cube3by3:
                 [color] * 3,
                 [color] * 3]
 
+    def get_face(self, face_name):
+        if face_name == 'top':
+            return self.top_face
+        if face_name == 'front':
+            return self.front_face
+        if face_name == 'left':
+            return self.left_face
+        if face_name == 'right':
+            return self.right_face
+        if face_name == 'back':
+            return self.back_face
+        if face_name == 'bottom':
+            return self.bottom_face
+
+    def move_R(self, double, reverse):
+        pass
+
+    def move_L(self, double, reverse):
+        pass
+
+    def move_U(self, double, reverse):
+        pass
+
+    def move_D(self, double, reverse):
+        pass
+
+    def move_F(self, double, reverse):
+        pass
+
+    def move_B(self, double, reverse):
+        pass
+
+    def move_M(self, double, reverse):
+        pass
+
+    def move_E(self, double, reverse):
+        pass
+
+    def move_S(self, double, reverse):
+        pass
+
+    def move_X(self, double, reverse):
+        pass
+
+    def move_Y(self, double, reverse):
+        pass
+
+    def move_Z(self, double, reverse):
+        pass
+
     def __str__(self):
-        s = '\n'.join([(' ' * 6) + ' '.join(r) for r in self.top_face]) + '\n'
+        s = '\n'.join([(' ' * 6) + ' '.join(map(color2letter.get, r)) for r in self.get_face('top')]) + '\n'
         s += '\n'.join(
-            [' '.join([' '.join(l), ' '.join(f), ' '.join(r), ' '.join(b)])
-             for l, f, r, b in zip(self.left_face, self.front_face, self.right_face, self.back_face)]
+            [' '.join([' '.join(map(color2letter.get, l)), ' '.join(map(color2letter.get, f)),
+                       ' '.join(map(color2letter.get, r)), ' '.join(map(color2letter.get, b))])
+             for l, f, r, b in
+             zip(self.get_face('left'), self.get_face('front'), self.get_face('right'), self.get_face('back'))]
         )
-        s += '\n' + '\n'.join([(' ' * 6) + ' '.join(r) for r in self.bottom_face]) + '\n'
+        s += '\n' + '\n'.join([(' ' * 6) + ' '.join(map(color2letter.get, r)) for r in self.get_face('bottom')]) + '\n'
         return s
-
-    def make_move(self, move):
-        dbl_layer = move[0].islower()
-        dbl_rot = '2' in move
-        reverse = '\'' in move
-        move = move.upper()
-        move_letter = move[0]
-
-        if move_letter == 'R':
-            self._move_r(dbl_layer, dbl_rot, reverse)
-        elif move_letter == 'L':
-            self._move_l(dbl_layer, dbl_rot, reverse)
-        elif move_letter == 'U':
-            self._move_u(dbl_layer, dbl_rot, reverse)
-        elif move_letter == 'D':
-            self._move_d(dbl_layer, dbl_rot, reverse)
-        elif move_letter == 'F':
-            self._move_f(dbl_layer, dbl_rot, reverse)
-        elif move_letter == 'B':
-            self._move_b(dbl_layer, dbl_rot, reverse)
-        elif move_letter == 'M':
-            self._move_m(dbl_rot, reverse)
-        elif move_letter == 'E':
-            self._move_e(dbl_rot, reverse)
-        elif move_letter == 'S':
-            self._move_x(dbl_rot, reverse)
-        elif move_letter == 'X':
-            self._move_m(dbl_rot, reverse)
-        elif move_letter == 'Y':
-            self._move_y(dbl_rot, reverse)
-        elif move_letter == 'Z':
-            self._move_z(dbl_rot, reverse)
-
-    def _move_r(self, dbl_layer, dbl_rot, reverse):
-        pass
-
-    def _move_l(self, dbl_layer, dbl_rot, reverse):
-        pass
-
-    def _move_u(self, dbl_layer, dbl_rot, reverse):
-        pass
-
-    def _move_d(self, dbl_layer, dbl_rot, reverse):
-        pass
-
-    def _move_f(self, dbl_layer, dbl_rot, reverse):
-        pass
-
-    def _move_b(self, dbl_layer, dbl_rot, reverse):
-        pass
-
-    def _move_m(self, dbl_rot, reverse):
-        pass
-
-    def _move_e(self, dbl_rot, reverse):
-        pass
-
-    def _move_s(self, dbl_rot, reverse):
-        pass
-
-    def _move_x(self, dbl_rot, reverse):
-        pass
-
-    def _move_y(self, dbl_rot, reverse):
-        pass
-
-    def _move_z(self, dbl_rot, reverse):
-        pass
 
 
 if __name__ == '__main__':
-    cube = Cube3by3()
+    cube = CubeSimple()
     print(cube)
+
