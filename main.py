@@ -181,7 +181,19 @@ class CubeSimple(ClassicCubeEngine):
             return self.bottom_face
 
     def move_R(self, double, reverse):
-        pass
+        self.right_face = CubeSimple._rotate_face(self.right_face, not reverse, double)
+        if double:
+            CubeSimple._swap_columns(self.front_face, 2, self.back_face, 0, True)
+            CubeSimple._swap_columns(self.top_face, 2, self.bottom_face, 2, False)
+        else:
+            if reverse:
+                CubeSimple._swap_columns(self.front_face, 2, self.bottom_face, 2)
+                CubeSimple._swap_columns(self.front_face, 2, self.back_face, 0, True)
+                CubeSimple._swap_columns(self.front_face, 2, self.top_face, 2)
+            else:
+                CubeSimple._swap_columns(self.front_face, 2, self.top_face, 2)
+                CubeSimple._swap_columns(self.front_face, 2, self.back_face, 0, True)
+                CubeSimple._swap_columns(self.front_face, 2, self.bottom_face, 2)
 
     def move_L(self, double, reverse):
         pass
@@ -216,6 +228,45 @@ class CubeSimple(ClassicCubeEngine):
     def move_Z(self, double, reverse):
         pass
 
+    @staticmethod
+    def _rotate_face(face, clockwise, double):
+        if double:
+            # corners
+            face[0][0], face[2][2] = face[2][2], face[0][0]
+            face[0][2], face[2][0] = face[2][0], face[0][2]
+            # sides
+            face[0][1], face[2][1] = face[2][1], face[0][1]
+            face[1][0], face[1][2] = face[1][2], face[1][0]
+        else:
+            if clockwise:
+                # corners
+                face[0][0], face[0][2] = face[0][2], face[0][0]
+                face[0][0], face[2][2] = face[2][2], face[0][0]
+                face[0][0], face[2][0] = face[2][0], face[0][0]
+                # sides
+                face[0][1], face[1][2] = face[1][2], face[0][1]
+                face[0][1], face[2][1] = face[2][1], face[0][1]
+                face[0][1], face[1][0] = face[1][0], face[0][1]
+            else:
+                # corners
+                face[0][0], face[2][0] = face[2][0], face[0][0]
+                face[0][0], face[2][2] = face[2][2], face[0][0]
+                face[0][0], face[0][2] = face[0][2], face[0][0]
+                # sides
+                face[0][1], face[1][0] = face[1][0], face[0][1]
+                face[0][1], face[2][1] = face[2][1], face[0][1]
+                face[0][1], face[1][2] = face[1][2], face[0][1]
+        return face
+
+    @staticmethod
+    def _swap_columns(face1, col1, face2, col2, reverse=False):
+        if reverse:
+            for i in range(3):
+                face1[2-i][col1], face2[i][col2] = face2[i][col2], face1[2-i][col1]
+        else:
+            for i in range(3):
+                face1[i][col1], face2[i][col2] = face2[i][col2], face1[i][col1]
+
     def __str__(self):
         s = '\n'.join([(' ' * 6) + ' '.join(map(color2letter.get, r)) for r in self.get_face('top')]) + '\n'
         s += '\n'.join(
@@ -228,7 +279,22 @@ class CubeSimple(ClassicCubeEngine):
         return s
 
 
-if __name__ == '__main__':
+def get_test_cube_1():
     cube = CubeSimple()
-    print(cube)
+    cube.right_face = [
+        [FaceColor.WHITE, FaceColor.RED, FaceColor.BLUE],
+        [FaceColor.BLUE, FaceColor.RED, FaceColor.WHITE],
+        [FaceColor.YELLOW, FaceColor.YELLOW, FaceColor.ORANGE]
+    ]
+    cube.top_face[0][2] = FaceColor.GREEN
+    cube.top_face[1][2] = FaceColor.YELLOW
+    cube.front_face[0][2] = FaceColor.BLUE
+    cube.front_face[1][2] = FaceColor.ORANGE
+    return cube
 
+
+if __name__ == '__main__':
+    cube = get_test_cube_1()
+    print(cube)
+    cube.move_R(True, False)
+    print(cube)
