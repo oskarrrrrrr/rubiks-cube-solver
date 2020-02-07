@@ -196,13 +196,49 @@ class CubeSimple(ClassicCubeEngine):
                 CubeSimple._swap_columns(self.front_face, 2, self.bottom_face, 2)
 
     def move_L(self, double, reverse):
-        pass
+        self.left_face = CubeSimple._rotate_face(self.left_face, reverse, double)
+        if double:
+            CubeSimple._swap_columns(self.front_face, 0, self.back_face, 2, True)
+            CubeSimple._swap_columns(self.top_face, 0, self.bottom_face, 0, False)
+        else:
+            if reverse:
+                CubeSimple._swap_columns(self.front_face, 0, self.top_face, 0)
+                CubeSimple._swap_columns(self.front_face, 0, self.back_face, 2, True)
+                CubeSimple._swap_columns(self.front_face, 0, self.bottom_face, 0)
+            else:
+                CubeSimple._swap_columns(self.front_face, 0, self.bottom_face, 0)
+                CubeSimple._swap_columns(self.front_face, 0, self.back_face, 2, True)
+                CubeSimple._swap_columns(self.front_face, 0, self.top_face, 0)
 
     def move_U(self, double, reverse):
-        pass
+        self.top_face = CubeSimple._rotate_face(self.top_face, not reverse, double)
+        if double:
+            self.front_face[0], self.back_face[0] = self.back_face[0], self.front_face[0]
+            self.left_face[0], self.right_face[0] = self.right_face[0], self.left_face[0]
+        else:
+            if reverse:
+                self.right_face[0], self.back_face[0] = self.back_face[0], self.right_face[0]
+                self.front_face[0], self.right_face[0] = self.right_face[0], self.front_face[0]
+                self.left_face[0], self.front_face[0] = self.front_face[0], self.left_face[0]
+            else:
+                self.left_face[0], self.front_face[0] = self.front_face[0], self.left_face[0]
+                self.front_face[0], self.right_face[0] = self.right_face[0], self.front_face[0]
+                self.right_face[0], self.back_face[0] = self.back_face[0], self.right_face[0]
 
     def move_D(self, double, reverse):
-        pass
+        self.top_face = CubeSimple._rotate_face(self.top_face, reverse, double)
+        if double:
+            self.front_face[2], self.back_face[2] = self.back_face[2], self.front_face[2]
+            self.left_face[2], self.right_face[2] = self.right_face[2], self.left_face[2]
+        else:
+            if reverse:
+                self.left_face[2], self.front_face[2] = self.front_face[2], self.left_face[2]
+                self.front_face[2], self.right_face[2] = self.right_face[2], self.front_face[2]
+                self.right_face[2], self.back_face[2] = self.back_face[2], self.right_face[2]
+            else:
+                self.right_face[2], self.back_face[2] = self.back_face[2], self.right_face[2]
+                self.front_face[2], self.right_face[2] = self.right_face[2], self.front_face[2]
+                self.left_face[2], self.front_face[2] = self.front_face[2], self.left_face[2]
 
     def move_F(self, double, reverse):
         pass
@@ -211,16 +247,61 @@ class CubeSimple(ClassicCubeEngine):
         pass
 
     def move_M(self, double, reverse):
-        pass
+        if double:
+            CubeSimple._swap_columns(self.front_face, 1, self.back_face, 1, True)
+            CubeSimple._swap_columns(self.top_face, 1, self.bottom_face, 1, False)
+        else:
+            if reverse:
+                CubeSimple._swap_columns(self.front_face, 1, self.top_face, 1)
+                CubeSimple._swap_columns(self.front_face, 1, self.back_face, 1, True)
+                CubeSimple._swap_columns(self.front_face, 1, self.bottom_face, 1)
+            else:
+                CubeSimple._swap_columns(self.front_face, 1, self.bottom_face, 1)
+                CubeSimple._swap_columns(self.front_face, 1, self.back_face, 1, True)
+                CubeSimple._swap_columns(self.front_face, 1, self.top_face, 1)
 
     def move_E(self, double, reverse):
-        pass
+        if double:
+            self.front_face[1], self.back_face[1] = self.back_face[1], self.front_face[1]
+            self.left_face[1], self.right_face[1] = self.right_face[1], self.left_face[1]
+        else:
+            if reverse:
+                self.left_face[1], self.front_face[1] = self.front_face[1], self.left_face[1]
+                self.front_face[1], self.right_face[1] = self.right_face[1], self.front_face[1]
+                self.right_face[1], self.back_face[1] = self.back_face[1], self.right_face[1]
+            else:
+                self.right_face[1], self.back_face[1] = self.back_face[1], self.right_face[1]
+                self.front_face[1], self.right_face[1] = self.right_face[1], self.front_face[1]
+                self.left_face[1], self.front_face[1] = self.front_face[1], self.left_face[1]
 
     def move_S(self, double, reverse):
         pass
 
     def move_X(self, double, reverse):
-        pass
+        if double:
+            self.top_face, self.bottom_face = self.bottom_face, self.top_face
+            self.front_face, self.back_face = self.back_face, self.front_face
+            CubeSimple._rotate_face(self.left_face, False, True)
+            CubeSimple._rotate_face(self.right_face, False, True)
+            CubeSimple._rotate_face(self.front_face, False, True)
+            CubeSimple._rotate_face(self.back_face, False, True)
+        else:
+            if reverse:
+                self.back_face, self.bottom_face = self.bottom_face, self.back_face
+                self.front_face, self.bottom_face = self.bottom_face, self.front_face
+                self.front_face, self.top_face = self.top_face, self.front_face
+                CubeSimple._rotate_face(self.left_face, True, False)
+                CubeSimple._rotate_face(self.right_face, False, False)
+                CubeSimple._rotate_face(self.back_face, False, True)
+                CubeSimple._rotate_face(self.top_face, False, True)
+            else:
+                self.front_face, self.top_face = self.top_face, self.front_face
+                self.front_face, self.bottom_face = self.bottom_face, self.front_face
+                self.back_face, self.bottom_face = self.bottom_face, self.back_face
+                CubeSimple._rotate_face(self.left_face, False, False)
+                CubeSimple._rotate_face(self.right_face, True, False)
+                CubeSimple._rotate_face(self.back_face, False, True)
+                CubeSimple._rotate_face(self.bottom_face, False, True)
 
     def move_Y(self, double, reverse):
         pass
@@ -296,5 +377,5 @@ def get_test_cube_1():
 if __name__ == '__main__':
     cube = get_test_cube_1()
     print(cube)
-    cube.move_R(True, False)
+    cube.make_move("E'")
     print(cube)
