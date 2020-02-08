@@ -147,6 +147,11 @@ class ClassicCubeEngine(ABC):
         elif move_letter == 'Z':
             self.move_Z(double, reverse)
 
+    def apply_moves(self, instr):
+        moves = instr.split(" ")
+        for m in moves:
+            make_move(self, m)
+
 
 class CubeSimple(ClassicCubeEngine):
     def __init__(self):
